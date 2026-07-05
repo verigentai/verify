@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // verify-commitment.mjs — PUBLIC, in-repo verifier for Verigent's commit-then-reveal battery
 // transparency (Deserving Doctrine Stage 1). Anyone can run this to confirm Verigent pre-committed to
-// each retired probe BEFORE revealing it — i.e. the test wasn't changed after the fact.
+// each retired challenge BEFORE revealing it — i.e. the test wasn't changed after the fact.
 //
-// For every revealed retired probe (/api/battery-reveal) it recomputes SHA-256(salt || probe_content)
+// For every revealed retired challenge (/api/battery-reveal) it recomputes SHA-256(salt || probe_content)
 // and checks that hash appears in that version's PRE-committed list (/api/battery-versions). If every
-// revealed probe matches a prior commitment, test integrity is proven without trusting Verigent.
+// revealed challenge matches a prior commitment, test integrity is proven without trusting Verigent.
 //
 // Usage:
 //   node verify-commitment.mjs                       # verify against https://verigent.ai
@@ -56,7 +56,7 @@ for (const v of versions.versions || []) {
 
 const rows = reveals.reveals || [];
 if (rows.length === 0) {
-  console.log('No revealed probes yet — nothing to verify (commitments are published; reveals follow on retirement).');
+  console.log('No revealed challenges yet — nothing to verify (commitments are published; reveals follow on retirement).');
   process.exit(0);
 }
 
@@ -71,5 +71,5 @@ for (const rev of rows) {
   pass ? ok++ : bad++;
 }
 
-console.log(`\n${bad === 0 ? '✅' : '❌'}  ${ok}/${rows.length} revealed probes verified against their pre-commitment${bad ? ` — ${bad} FAILED` : ''}.`);
+console.log(`\n${bad === 0 ? '✅' : '❌'}  ${ok}/${rows.length} revealed challenges verified against their pre-commitment${bad ? ` — ${bad} FAILED` : ''}.`);
 process.exit(bad === 0 ? 0 : 1);

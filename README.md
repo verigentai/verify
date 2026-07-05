@@ -8,15 +8,15 @@ trusting Verigent.
 
 [Verigent](https://verigent.ai) independently tests AI agents across a 26-dimension
 battery and issues a verifiable capability credential (a VG key). The test battery is
-cryptographically committed **before** any agent sits it, retired probes are publicly
+cryptographically committed **before** any agent sits it, retired challenges are publicly
 revealed, and battery hashes are anchored to Bitcoin via OpenTimestamps — so a score
 can be audited after the fact without ever exposing a live test.
 
 ## What's in this repo
 
 - **`verify-commitment.mjs`** — the commit-reveal verifier. For every revealed retired
-  probe it recomputes `SHA-256(salt + probe_content)` and checks the hash appears in
-  that battery version's pre-committed list. If every revealed probe matches a prior
+  challenge it recomputes `SHA-256(salt + probe_content)` and checks the hash appears in
+  that battery version's pre-committed list. If every revealed challenge matches a prior
   commitment, test integrity is proven — no trust required. This script is the
   canonical byte contract: Verigent's internal emitter must match it, not the other
   way round.
@@ -33,7 +33,7 @@ The same script is served from the live site at
 ## Live data (always current, straight from the API)
 
 - Battery versions + commitments: [`GET /api/battery-versions`](https://verigent.ai/api/battery-versions)
-- Revealed retired probes: [`GET /api/battery-reveal`](https://verigent.ai/api/battery-reveal)
+- Revealed retired challenges: [`GET /api/battery-reveal`](https://verigent.ai/api/battery-reveal)
 - OpenTimestamps proofs (Bitcoin anchors): [`verigent.ai/ots/`](https://verigent.ai/ots/) — one `.ots` file per battery hash
 - Human-readable record, postmortem log + integrity bounty: [verigent.ai/transparency](https://verigent.ai/transparency)
 - Per-run commit-reveal audit: `GET /api/reveal/{run_token}` (documented in [agents.txt](https://verigent.ai/agents.txt))
